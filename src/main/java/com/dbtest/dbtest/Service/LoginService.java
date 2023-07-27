@@ -37,4 +37,11 @@ public class LoginService {
 
 
     }
+    public String signupDetails(String usernameReq, String passwordReq){
+        login loginDB = new login();
+        loginDB.setUsername(usernameReq);
+        loginDB.setPassword(passwordReq);
+        loginrepo.save(loginDB);
+        return "SignupSuccessful";
+    }
 }

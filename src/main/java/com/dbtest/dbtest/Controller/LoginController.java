@@ -17,12 +17,21 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+
     @PostMapping("/login")
     public String postDetails(@RequestParam("username") String username,
                               @RequestParam("password") String password){
-        return loginService.loginDetails(username , password);
+        return loginService.loginDetails(username, password);
     }
-
+    @GetMapping("/Signup")
+    public String signup(){
+        return "Signup";
+    }
+    @PostMapping("/Signup")
+    public String signupDetails(@RequestParam("username") String username,
+                                @RequestParam("password") String password){
+        return loginService.signupDetails(username, password);
+    }
 
 //    public LoginResponse postDetails(@RequestBody LoginReq loginReq){
 ////    LoginResponse loginResponse = loginService.loginDetails(loginReq);
