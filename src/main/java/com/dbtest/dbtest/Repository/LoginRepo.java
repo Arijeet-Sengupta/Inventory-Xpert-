@@ -10,11 +10,11 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 
 public interface LoginRepo extends JpaRepository<Account, Integer> {
-      @Query
-     Account findByEmail(@Param("Email") String email);
+    @Query
+    Account findByEmail(@Param("Email") String email);
 
-      @Transactional
-      @Modifying
-      @Query(("update Account acc set acc.last_login = ?1 where acc.email = ?2"))
-      void updateLastLogin(@Param(" ") LocalDateTime last_login, String email);
+    @Transactional
+    @Modifying
+    @Query(("update Account acc set acc.last_login = ?1 where acc.email = ?2"))
+    void updateLastLogin(@Param(" ") LocalDateTime last_login, String email);
 }
