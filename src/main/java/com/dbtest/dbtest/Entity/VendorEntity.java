@@ -17,11 +17,11 @@ public class VendorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int vendorid;
 
-    private long vendorId;
-    @Column(name = "vendorName")
+    @Column(name = "vendorname")
     private String vendorName;
-    @Column(name = "vendorType")
+    @Column(name = "vendortype")
     private String vendorType;
 
     private String vendorLocation;

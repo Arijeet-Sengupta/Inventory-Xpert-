@@ -11,37 +11,37 @@ import java.time.LocalDateTime;
 @Table(name= "subproductdetails")
 public class Subproduct {
     @Id
-    @Column(name="subProductId")
+    @Column(name="subproductid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int subProductId;
 
-    @Column(name="subProductName")
+    @Column(name="subproductname")
     private String subProductName;
 
     @OneToOne
-    @JoinColumn(name = "productId", referencedColumnName = "productId")
+    @JoinColumn(name = "productid", referencedColumnName = "productid")
     private ProductEntity productDetails;
 
     @OneToOne
-    @JoinColumn(name = "vendorId", referencedColumnName = "vendorId")
+    @JoinColumn(name = "vendorid", referencedColumnName = "vendorid")
     private VendorEntity vendorDetails;
 
-    @Column(name="productSellingPrice")
+    @Column(name="productsellingprice")
     private float productSellingPrice;
 
-    @Column(name="productPurchasePrice")
+    @Column(name="productpurchaseprice")
     private float productPurchasePrice;
 
-    @Column(name="lastUpdatedBy")
+    @Column(name="lastupdatedby")
     private String lastUpdatedBy;
 
-    @Column(name="lastUpdatedTimestamp")
+    @Column(name="lastupdatedtimestamp")
     private LocalDateTime lastUpdatedTimestamp;
 
-    @Column(name="createdBy")
+    @Column(name="createdby")
     private String createdBy;
 
-    @Column(name="createdByTimestamp")
+    @Column(name="createdbytimestamp")
     private LocalDateTime createdByTimestamp;
 
 }

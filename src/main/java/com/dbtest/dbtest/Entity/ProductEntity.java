@@ -15,22 +15,22 @@ import java.time.LocalDateTime;
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="productId")
+    @Column(name="productid")
     private int productId;
 
-    @Column(name="productName")
+    @Column(name="productname")
     private String productName;
 
-    @Column(name="lastUpdatedBy")
-    private String lastUpdatedBy;
+    @Column(name="lastupdatedby")
+    private String lastupdatedby;
 
-    @Column(name="lastUpdatedByTimestamp")
-    private LocalDateTime lastUpdatedByTimestamp;
+    @Column(name="lastupdatedbytimestamp")
+    private LocalDateTime lastupdatedbytimestamp;
 
-    @Column(name="createdBy")
-    private String createdBy;
+    @Column(name="createdby")
+    private String createdby;
 
-    @Column(name="createdByTimestamp")
-    private LocalDateTime createdByTimestamp;
+    @Column(name="createdbytimestamp")
+    private LocalDateTime createdbytimestamp;
 
 }
