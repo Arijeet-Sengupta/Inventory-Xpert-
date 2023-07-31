@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color:#ffc3a0;
+            background-color: #ffc3a0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -47,11 +47,10 @@
         }
     </style>
 </head>
-<body>
+<body th:action="@{/login}" method="get">
 <div class="popup">
-    <h2>Successfully Logged In</h2>
-    <p>Welcome You are now logged in.</p>
-    <button class="close-btn" onclick="closePopup()">Close</button>
+    <h2>Signup Successful</h2>
+    <button class="close-btn" onclick="closePopup()">Login</button>
 </div>
 
 <script>
@@ -59,7 +58,7 @@
             // Hide the popup when the close button is clicked
             const popup = document.querySelector('.popup');
             popup.style.display = 'none';
-            window.location.href = '/login'
+             window.location.href = '/login'
         }
     </script>
 </body>
