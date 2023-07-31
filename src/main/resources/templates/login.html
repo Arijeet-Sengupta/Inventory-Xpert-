@@ -69,19 +69,27 @@
 <body>
 <div class="login-container">
     <h2>Login</h2>
-    <form th:action="@{/login}" method="post">
+    <form id = "myForm" th:action="@{/login}" method="post">
         <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" required>
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" required>
         </div>
         <div class="form-group">
         <label for="password">Password</label>
         <input type="password" id="password" name="password" required>
         </div>
+        <input type="hidden" id="last_login" name="last_login">
         <div class="form-group">
+
         <input type="submit" value="Login">
         </div>
     </form>
 </div>
+<script>
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+    var last_login = new Date();
+    document.getElementById("last_login").value = last_login;
+});
+</script>
 </body>
 </html>
