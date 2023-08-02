@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name= "subproductdetails")
 public class Subproduct {
+
     @Id
     @Column(name="subproductid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
