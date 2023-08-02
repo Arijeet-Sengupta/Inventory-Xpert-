@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 public interface InventoryRepo extends JpaRepository<Inventory, Integer> {
      @Query
-    Inventory findBysubProductDetails(@Param(" ") Subproduct productEntity);
+    Inventory findByinventoryid(@Param(" ") int inventoryid);
 
 
      @Query
