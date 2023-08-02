@@ -15,9 +15,10 @@ import java.time.LocalDateTime;
 public interface ProductRepo extends JpaRepository<ProductEntity, Integer> {
 
       @Query
-      ProductEntity findByproductName(@Param("") String productname);
+      ProductEntity findByproductName(@Param("") String productName);
     @Query
-    ProductEntity findByproductId (@Param(" ") int productid);
+
+    ProductEntity findByproductId (@Param(" ") int productId);
 
 
   //  @Modifying
@@ -29,4 +30,6 @@ public interface ProductRepo extends JpaRepository<ProductEntity, Integer> {
 
 
 
+
+    
 }
