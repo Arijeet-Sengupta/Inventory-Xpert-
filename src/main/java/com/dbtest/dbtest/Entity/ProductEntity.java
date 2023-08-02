@@ -18,6 +18,7 @@ public class ProductEntity {
     @Column(name="productid")
     private int productId;
 
+    //
     @Column(name="productname")
     private String productName;
 
@@ -32,5 +33,9 @@ public class ProductEntity {
 
     @Column(name="createdbytimestamp")
     private LocalDateTime createdbytimestamp;
+
+
+
+
 
 }
