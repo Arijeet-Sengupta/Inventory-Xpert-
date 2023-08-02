@@ -10,5 +10,5 @@ public interface ProductRepo extends JpaRepository<ProductEntity, Integer> {
 
 
     @Query
-    ProductEntity findByproductName (@Param(" ") String productName);
+    ProductEntity  findByproductName (@Param(" ") String productName);
 }
