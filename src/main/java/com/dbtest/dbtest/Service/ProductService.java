@@ -21,12 +21,20 @@ public class ProductService {
    ProductResponse productResponse = new ProductResponse();
 
 
-   //Applying condition to check if the product name is UNIQUE or not
+
+
+
+   //Applying condition to check if the product name is unique or not
+
    public ProductResponse addProduct( String productname)
    {
       ProductEntity productEntity = new ProductEntity();
 
+
+     //  ProductEntity existingProduct = productRepo.findByproductName(productname);
+
        ProductEntity existingProduct = productRepo.findByproductName(productname);
+
       if(existingProduct==null)
        {
          adddetails(productname);
@@ -44,14 +52,20 @@ public class ProductService {
 
 
 
+
+
 private ProductResponse adddetails( String productname)
 {
     ProductEntity productEntity = new ProductEntity();
+
+
+
     productEntity.setProductName(productname);
     productEntity.setCreatedby(CreatedBy);
     productEntity.setLastupdatedby(UpdatedBy);
     productEntity.setLastupdatedbytimestamp(LocalDateTime.now());
     productEntity.setCreatedbytimestamp(LocalDateTime.now());
+
 
        productRepo.save(productEntity);
        productResponse.message = "Products are added ";

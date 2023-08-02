@@ -20,8 +20,10 @@ public interface ProductRepo extends JpaRepository<ProductEntity, Integer> {
     ProductEntity findByproductId (@Param(" ") int productid);
 
 
-
-
+  //  @Modifying
+    //@Transactional
+    //@Query("update ProductEntity p set p.productName = :newProductName, p.lastupdatedby = :lastupdatedby, p.lastupdatedtimestamp = :lastupdatedtimestamp where p.productName = :existingProduct")
+    //ProductEntity updateProductName(String existingProduct, String newProductName, String lastupdatedby, LocalDateTime lastupdatedtimestamp);
 
 
 
