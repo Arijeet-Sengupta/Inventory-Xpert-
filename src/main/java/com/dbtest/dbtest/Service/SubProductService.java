@@ -38,51 +38,11 @@ public SubProductResponse addSubProduct(SubProductSchema subProductSchema) {
     // if subproduct found is null new record will be added otherwise record willbe updated
     if (subproduct == null) {
         addSubProductinDb(subProductSchema.subProductName, subProductSchema.productName, subProductSchema.vendorName, subProductSchema.productSellingPrice, subProductSchema.productPurchasePrice);
-        subProductResponse.message = "Product added successfully";
+        subProductResponse.message = "SubProduct added successfully";
+        subProductResponse.YourSubproductID=subproduct.getSubProductId();
     } else {
-        boolean attributesChanged = false;
-
-        // Check if any of the attributes have changed
-        if (!subproduct.getProductDetails().getProductName().equals(subProductSchema.productName)) {
-            ProductEntity prod=productRepo.findByproductName(subProductSchema.productName);
-            if(prod==null){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Product with ProductName found");
-            }
-            else{
-                subproduct.setProductDetails(prod);
-            }
-            attributesChanged = true;
-        }
-        if (!subproduct.getVendorDetails().getVendorName().equals(subProductSchema.vendorName)) {
-             VendorEntity vend=vendorRepo.findByvendorName(subProductSchema.vendorName);
-            if (vend == null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Vendor with VendorName found");
-            }
-            else {
-                subproduct.setVendorDetails(vend);
-            }
-            attributesChanged = true;
-        }
-        if (subproduct.getProductSellingPrice()!=(subProductSchema.productSellingPrice)) {
-            subproduct.setProductSellingPrice(subProductSchema.productSellingPrice);
-            attributesChanged = true;
-        }
-        if (subproduct.getProductPurchasePrice()!=subProductSchema.productPurchasePrice) {
-            subproduct.setProductPurchasePrice(subProductSchema.productPurchasePrice);
-            attributesChanged = true;
-        }
-
-        if (attributesChanged==true) {
-            // Update the lastUpdatedBy and lastUpdatedTimestamp
-            subproduct.setLastUpdatedBy(lastUpdatedBy);
-            subproduct.setLastUpdatedTimestamp(LocalDateTime.now());
-
-            // Save the updated subproduct in the database
-            subProductRepo.save(subproduct);
-            subProductResponse.message = "Subproduct attributes updated";
-        } else if (attributesChanged==false) {
-            subProductResponse.message = "Subproduct already exists in the database with the same attributes";
-        }
+        subProductResponse.message = "SubProduct already exists please update successfully";
+        subProductResponse.YourSubproductID=subproduct.getSubProductId();
     }
 
     return subProductResponse;
@@ -116,4 +76,53 @@ public SubProductResponse addSubProduct(SubProductSchema subProductSchema) {
 
     }
 
+    public SubProductResponse updateSubproduct(SubProductSchema subProductSchema ){
+        Subproduct subproduct = subProductRepo.findBysubProductId(subProductSchema.subproductId);
+        boolean attributesChanged = false;
+
+        // Check if any of the attributes have changed
+        if (!subproduct.getProductDetails().getProductName().equals(subProductSchema.productName)) {
+            ProductEntity prod=productRepo.findByproductName(subProductSchema.productName);
+            if(prod==null){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Product with ProductName found. Plese add Subproduct first");
+            }
+            else{
+                subproduct.setProductDetails(prod);
+            }
+            attributesChanged = true;
+        }
+        if (!subproduct.getVendorDetails().getVendorName().equals(subProductSchema.vendorName)) {
+            VendorEntity vend=vendorRepo.findByvendorName(subProductSchema.vendorName);
+            if (vend == null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Vendor with VendorName found. Please add Subproduct first");
+            }
+            else {
+                subproduct.setVendorDetails(vend);
+            }
+            attributesChanged = true;
+        }
+        if (subproduct.getProductSellingPrice()!=(subProductSchema.productSellingPrice)) {
+            subproduct.setProductSellingPrice(subProductSchema.productSellingPrice);
+            attributesChanged = true;
+        }
+        if (subproduct.getProductPurchasePrice()!=subProductSchema.productPurchasePrice) {
+            subproduct.setProductPurchasePrice(subProductSchema.productPurchasePrice);
+            attributesChanged = true;
+        }
+
+        if (attributesChanged==true) {
+            // Update the lastUpdatedBy and lastUpdatedTimestamp
+            subproduct.setLastUpdatedBy(lastUpdatedBy);
+            subproduct.setLastUpdatedTimestamp(LocalDateTime.now());
+
+            // Save the updated subproduct in the database
+            subProductRepo.save(subproduct);
+            subProductResponse.message = "Subproduct attributes updated";
+            subProductResponse.YourSubproductID=subproduct.getSubProductId();
+        } else if (attributesChanged==false) {
+            subProductResponse.message = "Subproduct already exists in the database with the same attributes";
+            subProductResponse.YourSubproductID=subproduct.getSubProductId();
+        }
+        return  subProductResponse;
+    }
 }

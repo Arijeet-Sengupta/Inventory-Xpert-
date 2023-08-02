@@ -15,5 +15,6 @@ public interface SubProductRepo extends JpaRepository<Subproduct, Integer> {
     @Query
     Subproduct findBysubProductName(@Param("")String subProductName);
 
-
+    @Query
+    Subproduct findBysubProductId(@Param(" ") int subProductId);
 }
