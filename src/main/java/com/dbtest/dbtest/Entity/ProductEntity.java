@@ -16,10 +16,10 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="productid")
-    private int productId;
+    private int productid;
 
     @Column(name="productname")
-    private String productName;
+    private String productname;
 
     @Column(name="lastupdatedby")
     private String lastupdatedby;
@@ -32,5 +32,56 @@ public class ProductEntity {
 
     @Column(name="createdbytimestamp")
     private LocalDateTime createdbytimestamp;
+
+    public int getproductid() {
+        return productid;
+    }
+
+    public void setproductid(int productid) {
+        this.productid = productid;
+    }
+
+    public String getproductname() {
+        return productname;
+    }
+
+    public void setproductname(String productname) {
+        this.productname = productname;
+    }
+
+    public String getlastupdatedby() {
+        return lastupdatedby;
+    }
+
+    public void setlastupdatedby(String lastupdatedby) {
+        this.lastupdatedby = lastupdatedby;
+    }
+
+    public LocalDateTime getlastupdatedbytimestamp() {
+        return lastupdatedbytimestamp;
+    }
+
+    public void setlastupdatedbytimestamp(LocalDateTime lastupdatedbytimestamp) {
+        this.lastupdatedbytimestamp = lastupdatedbytimestamp;
+    }
+
+    public String getcreatedby() {
+        return createdby;
+    }
+
+    public void setcreatedby(String createdby) {
+        this.createdby = createdby;
+    }
+
+    public LocalDateTime getcreatedbytimestamp() {
+        return createdbytimestamp;
+    }
+
+    public void setcreatedbytimestamp(LocalDateTime createdbytimestamp) {
+        this.createdbytimestamp = createdbytimestamp;
+    }
+
+
+
 
 }
