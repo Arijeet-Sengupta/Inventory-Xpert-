@@ -2,10 +2,12 @@ package com.dbtest.dbtest.Schema;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SubProductResponse {
+public class ProductResponse {
+
+    //here the message will display
     @JsonProperty
     public String message;
 
     @JsonProperty
-    public  int YourSubproductID;
+    public int productId;
 }

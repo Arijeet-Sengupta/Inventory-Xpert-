@@ -33,4 +33,45 @@ public class ProductEntity {
     @Column(name="createdbytimestamp")
     private LocalDateTime createdbytimestamp;
 
+
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getLastupdatedby() {
+        return lastupdatedby;
+    }
+
+    public void setLastupdatedby(String lastupdatedby) {
+        this.lastupdatedby = lastupdatedby;
+    }
+
+    public LocalDateTime getLastupdatedbytimestamp() {
+        return lastupdatedbytimestamp;
+    }
+
+    public void setLastupdatedbytimestamp(LocalDateTime lastupdatedbytimestamp) {
+        this.lastupdatedbytimestamp = lastupdatedbytimestamp;
+    }
+
+    public String getCreatedby() {
+        return createdby;
+    }
+
+    public void setCreatedby(String createdby) {
+        this.createdby = createdby;
+    }
+
+    public LocalDateTime getCreatedbytimestamp() {
+        return createdbytimestamp;
+    }
+
+    public void setCreatedbytimestamp(LocalDateTime createdbytimestamp) {
+        this.createdbytimestamp = createdbytimestamp;
+    }
 }
