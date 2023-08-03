@@ -33,4 +33,13 @@ public class ProductEntity {
     @Column(name="createdbytimestamp")
     private LocalDateTime createdbytimestamp;
 
+
+
+
+
+
+
+
+
+
 }
