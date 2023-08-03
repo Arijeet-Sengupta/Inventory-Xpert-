@@ -14,10 +14,10 @@ public class SubProductSchema {
     public String vendorName;
 
     @JsonProperty
-    public float productSellingPrice;
+    public Double productSellingPrice;
 
     @JsonProperty
-    public float productPurchasePrice;
+    public Double productPurchasePrice;
 
     @JsonProperty
     public int subproductId;

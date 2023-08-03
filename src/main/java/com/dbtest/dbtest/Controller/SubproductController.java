@@ -13,11 +13,11 @@ public class SubproductController {
     @Autowired
     public SubProductService subProductService;
 
-    @PostMapping("/AddSubProduct")
+    @PostMapping("/SubProduct")
     public SubProductResponse AddSubProduct(@RequestBody SubProductSchema subProductSchema){
        return subProductService.addSubProduct(subProductSchema);
     }
-    @PutMapping("/UpdateSubproduct")
+    @PutMapping("/SubProduct")
     public SubProductResponse UpdateSubproduct(@RequestBody SubProductSchema subProductSchema){
         return subProductService.updateSubproduct(subProductSchema);
     }
