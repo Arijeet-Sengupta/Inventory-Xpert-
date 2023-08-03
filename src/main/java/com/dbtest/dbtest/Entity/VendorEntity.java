@@ -17,17 +17,28 @@ public class VendorEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vendorid")
     private int vendorid;
 
     @Column(name = "vendorname")
     private String vendorName;
-    @Column(name = "vendortype")
-    private String vendorType;
-
+    @Column(name = "vendorlocation")
     private String vendorLocation;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "lastupdatedby")
     private String lastUpdatedBy;
-    private LocalDateTime LastUpdatedByTimestamp;
+
+    @Column(name = "lastupdatedbytimestamp")
+    private LocalDateTime lastUpdatedByTimestamp;
+
+    @Column(name = "createdby")
     private String createdBy;
+
+    @Column(name = "createdbytimestamp")
     private LocalDateTime createdByTimestamp;
+
+
 }
