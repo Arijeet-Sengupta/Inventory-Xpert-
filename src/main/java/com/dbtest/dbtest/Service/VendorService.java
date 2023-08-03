@@ -21,39 +21,7 @@ public class VendorService {
 
     public String addVendor(String vendorname, String vendorlocation, String email
     ) {
-        VendorEntity existingVendor = vendorRepo.findByVendorName(vendorname);
 
-        if (existingVendor == null) {
-
-
-            addintoVendor(vendorname, vendorlocation, email);
-
-            vendorResponse.message = "Added";
-        } else {
-            if (existingVendor.getEmail().equals(email)) {
-                if (!(existingVendor.getVendorLocation().equals(vendorlocation))) {
-
-                    existingVendor.setVendorLocation(vendorlocation);
-                    existingVendor.setLastUpdatedBy(LAST_UPDATED_BY);
-                    existingVendor.setLastUpdatedByTimestamp(LocalDateTime.now());
-
-                } else {
-                    vendorResponse.message = "Data Already Exist";
-                }
-            } else {
-                existingVendor.setEmail(email);
-                existingVendor.setLastUpdatedBy(LAST_UPDATED_BY);
-                existingVendor.setLastUpdatedByTimestamp(LocalDateTime.now());
-
-            }
-            vendorRepo.save(existingVendor);
-
-
-        }
-        return vendorResponse.message= " ";
-    }
-
-        private void addintoVendor (String vendorname, String vendorlocation, String email){
             VendorEntity ve = new VendorEntity();
             ve.setVendorName(vendorname);
             ve.setVendorLocation(vendorlocation);
@@ -64,6 +32,42 @@ public class VendorService {
             ve.setCreatedByTimestamp(LocalDateTime.now());
             ve.setCreatedBy(CREATED_BY);
             vendorRepo.save(ve);
+            return "added vendor details";
         }
+    public VendorResponse UpdatedVendorDetails(int  vendorid, String vendorName, String vendorLocation, String email){
+
+
+        VendorEntity existingVendor = vendorRepo.findByVendorid(vendorid);
+
+        if(existingVendor == null){
+           vendorResponse.message="Id does not exists";
+       }else {
+            boolean check = false;
+            if(!existingVendor.getVendorName().equals(vendorName)){
+                existingVendor.setVendorName(vendorName);
+                vendorResponse.message="Updated vendorName";
+
+                check = true;
+            }
+            if(!existingVendor.getEmail().equals(email))
+           {
+               existingVendor.setEmail(email);
+               check = true;
+           }
+            if(!existingVendor.getVendorLocation().equals(vendorLocation)){
+                existingVendor.setVendorLocation(vendorLocation);
+                check= true;
+            }
+            if(check==true){
+                existingVendor.setLastUpdatedByTimestamp(LocalDateTime.now());
+                existingVendor.setCreatedByTimestamp(LocalDateTime.now());
+                existingVendor.setCreatedBy(CREATED_BY);
+                existingVendor.setLastUpdatedBy(LAST_UPDATED_BY);
+                vendorRepo.save(existingVendor);
+                vendorResponse.vendorid=existingVendor.getVendorid();
+            }
+        }
+       return vendorResponse;
+    }
 
 }
