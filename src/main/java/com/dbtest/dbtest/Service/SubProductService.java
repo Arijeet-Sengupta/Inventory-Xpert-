@@ -32,10 +32,11 @@ public class SubProductService {
 
     String createdBy= "Utkarsha";
 
-
+//method to check if same product is available in database as provided in by user
 public SubProductResponse addSubProduct(SubProductSchema subProductSchema) {
     ProductEntity prod = productRepo.findByproductName(subProductSchema.productName);
     VendorEntity vend = vendorRepo.findByvendorName(subProductSchema.vendorName);
+
     Subproduct subproduct= subProductRepo.findBySubProductNameAndProductDetailsAndVendorDetails(subProductSchema.subProductName,prod,vend);
 
     if(subproduct!=null) {
@@ -50,10 +51,9 @@ public SubProductResponse addSubProduct(SubProductSchema subProductSchema) {
     }
 
     return  subProductResponse;
-    //addSubProductinDb(subProductSchema.subProductName, subProductSchema.productName, subProductSchema.vendorName, subProductSchema.productSellingPrice, subProductSchema.productPurchasePrice);
 }
 
-
+//Method to add Subproducts
     private int addSubProductinDb(String subProductName, String productName, String vendorName, Double productSellingPrice, Double productPurchasePrice) {
 
        Subproduct subproduct=new Subproduct();
@@ -97,14 +97,16 @@ public SubProductResponse addSubProduct(SubProductSchema subProductSchema) {
 
     }
 
+   //Method to update any subproduct
     public SubProductResponse updateSubproduct(SubProductSchema subProductSchema ){
+    //find subproduct with Given id
         Subproduct subproduct = subProductRepo.findBysubProductId(subProductSchema.subproductId);
-
+            // if subproduct is null
         if (subproduct ==null){
             subProductResponse.message = "Please Provide Valid Subproduct ID or Add Subproduct First";
             subProductResponse.YourSubproductID = subproduct.getSubProductId();
         }
-
+            //if subproduct is found then update it
         else {
             boolean attributesChanged = false;
 
