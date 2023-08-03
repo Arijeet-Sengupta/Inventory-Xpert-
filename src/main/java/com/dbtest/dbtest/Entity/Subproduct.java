@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name= "subproductdetails")
 public class Subproduct {
+
     @Id
     @Column(name="subproductid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +28,10 @@ public class Subproduct {
     private VendorEntity vendorDetails;
 
     @Column(name="productsellingprice")
-    private float productSellingPrice;
+    private Double productSellingPrice;
 
     @Column(name="productpurchaseprice")
-    private float productPurchasePrice;
+    private Double productPurchasePrice;
 
     @Column(name="lastupdatedby")
     private String lastUpdatedBy;
