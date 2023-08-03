@@ -2,6 +2,7 @@ package com.dbtest.dbtest.Controller;
 
 import com.dbtest.dbtest.Entity.ProductEntity;
 import com.dbtest.dbtest.Repository.ProductRepo;
+import com.dbtest.dbtest.Schema.ProductReq;
 import com.dbtest.dbtest.Schema.ProductResponse;
 import com.dbtest.dbtest.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,19 @@ public class ProductController {
 
     //adding details
     @PostMapping("/adddetails")
-    public ProductResponse createProduct (@RequestParam("productname")String productname)
+    public ProductResponse createProduct (@RequestBody ProductReq productReq)
     {
 
-        return productService.addProduct(productname);
+        return productService.addorUpdate(productReq);
     }
+
+//    @PostMapping("/updateDetails")
+//    public ProductResponse updateProduct(@RequestBody ProductReq productReq)
+//    {
+//        return productService.updateproductname(productReq);
+//    }
+
+
 
 
 

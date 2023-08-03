@@ -7,4 +7,7 @@ public class ProductResponse {
     //here the message will display
     @JsonProperty
     public String message;
+
+    @JsonProperty
+    public int productId;
 }

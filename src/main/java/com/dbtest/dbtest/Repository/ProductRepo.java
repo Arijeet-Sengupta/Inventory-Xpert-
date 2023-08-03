@@ -16,9 +16,8 @@ public interface ProductRepo extends JpaRepository<ProductEntity, Integer> {
 
       @Query
       ProductEntity findByproductName(@Param("") String productName);
-    @Query
-
-    ProductEntity findByproductId (@Param(" ") int productId);
+      @Query
+      ProductEntity findByproductId (@Param(" ") int productId);
 
 
   //  @Modifying
@@ -26,10 +25,15 @@ public interface ProductRepo extends JpaRepository<ProductEntity, Integer> {
     //@Query("update ProductEntity p set p.productName = :newProductName, p.lastupdatedby = :lastupdatedby, p.lastupdatedtimestamp = :lastupdatedtimestamp where p.productName = :existingProduct")
     //ProductEntity updateProductName(String existingProduct, String newProductName, String lastupdatedby, LocalDateTime lastupdatedtimestamp);
 
+//      @Modifying
+//      @Transactional
+//      @Query("update ProductEntity p set p.productname = :productname  where p.productId=:productId")
+//      void updateProductName(String productname);
+//@Modifying
+//@Transactional
+//      @Query("UPDATE ProductEntity p SET p.productName = :productName WHERE productId = :productId")
+//      void updateProductName( String productName, Integer productId);
 
 
 
-
-
-    
 }
