@@ -38,49 +38,82 @@ public class InventoryService {
         InventoryResponse inventoryResponse = new InventoryResponse();
 
         ProductEntity productEntity = productRepo.findByproductName(productNameReq);
+        Subproduct subproduct = subProductRepo.findBysubProductName(subProductNameReq);
+        VendorEntity vendorEntity = vendorRepo.findByvendorName(vendorNameReq);
+        checkValidation(productEntity, subproduct, vendorEntity);
+
+        Inventory inventory = inventoryRepo.findByProductDetailsAndSubProductDetailsAndVendorDetails(productEntity, subproduct, vendorEntity);
+
+        if (!Objects.nonNull(inventory)) {
+
+           return addDetails(productTypeReq, stockLocationReq, productNameReq, subProductNameReq, quantityReq, vendorNameReq);
+
+        }
+        return inventoryResponse;
+    }
+
+    private void checkValidation(ProductEntity productEntity, Subproduct subproduct, VendorEntity vendorEntity) {
         if (!Objects.nonNull(productEntity)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request - Product Name not Valid ");
         }
-        Subproduct subproduct = subProductRepo.findBysubProductName(subProductNameReq);
         if (!Objects.nonNull(subproduct)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request - Sub-Product Name not Valid ");
         }
-        VendorEntity vendorEntity = vendorRepo.findByvendorName(vendorNameReq);
         if (!Objects.nonNull(vendorEntity)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request - Vendor Name not Valid ");
         }
-            Inventory inventory = inventoryRepo.findByProductDetailsAndSubProductDetailsAndVendorDetails(productEntity, subproduct, vendorEntity);
+    }
 
-            if (!Objects.nonNull(inventory)) {
-                addDetails(productTypeReq, stockLocationReq, productNameReq, subProductNameReq, quantityReq, vendorNameReq);
-                inventoryResponse.message = "added to inventory";
+    public InventoryResponse updateIntoInventory(String productTypeReq, String stockLocationReq, String productNameReq, String subProductNameReq, int quantityReq, int idReq, String vendorNameReq) {
+        InventoryResponse inventoryResponse = new InventoryResponse();
 
+        ProductEntity productEntity = productRepo.findByproductName(productNameReq);
+        Subproduct subproduct = subProductRepo.findBysubProductName(subProductNameReq);
+        VendorEntity vendorEntity = vendorRepo.findByvendorName(vendorNameReq);
+        checkValidation(productEntity, subproduct, vendorEntity);
+
+        Inventory inventory = inventoryRepo.findByinventoryid(idReq);
+        if (Objects.nonNull(inventory)) {
+            if (Objects.equals(inventory.getQuantity(), quantityReq) && Objects.equals(inventory.getStocklocation(), stockLocationReq) && Objects.equals(inventory.getProductType(), productTypeReq) && Objects.equals(inventory.getProductDetails(), productNameReq) && Objects.equals(inventory.getVendorDetails(), vendorNameReq) && Objects.equals(inventory.getSubProductDetails(), subProductNameReq)) {
+                inventoryResponse.message = "No Update made to the DB since the request data already exists in the DB";
             } else {
-                if (Objects.equals(inventory.getQuantity(), quantityReq) && Objects.equals(inventory.getStocklocation(), stockLocationReq )&& Objects.equals(inventory.getProductType(),productTypeReq )) {
-                    inventoryResponse.message = "No Update made to the DB since the request data already exists in the DB";
-                } else {
-                    inventoryRepo.updatestocklocation(stockLocationReq, subproduct);
-                    inventoryRepo.updatequantity(quantityReq, subproduct);
-                    inventory.setProductType(productTypeReq);
-                    Double purchasePrice = quantityReq * subproduct.getProductPurchasePrice();
-                    Double sellingPrice = quantityReq * subproduct.getProductSellingPrice();
-                    inventoryRepo.updateproductPurchasePrice(purchasePrice, subproduct);
-                    inventoryRepo.updateproductSellingPrice(sellingPrice, subproduct);
-                    inventoryRepo.updatelastUpdatedTimestamp(LocalDateTime.now(), subproduct);
-                    inventoryRepo.updatelastUpdatedBy(LAST_UPDATED_BY, subproduct);
-                    inventoryRepo.save(inventory);
-                    inventoryResponse.message = "The record updated successfully";
-                }
-
+                inventory.setStocklocation(stockLocationReq);
+//                inventoryRepo.updatestocklocation(stockLocationReq, subproduct);
+                inventory.setQuantity(quantityReq);
+//                inventoryRepo.updatequantity(quantityReq, subproduct);
+                inventory.setProductType(productTypeReq);
+                Double purchasePrice = quantityReq * subproduct.getProductPurchasePrice();
+                Double sellingPrice = quantityReq * subproduct.getProductSellingPrice();
+                inventory.setProductPurchasePrice(purchasePrice);
+//                inventoryRepo.updateproductPurchasePrice(purchasePrice, subproduct);
+                inventory.setProductSellingPrice(sellingPrice);
+//                inventoryRepo.updateproductSellingPrice(sellingPrice, subproduct);
+                inventory.setLastUpdatedTimestamp(LocalDateTime.now());
+//                inventoryRepo.updatelastUpdatedTimestamp(LocalDateTime.now(), subproduct);
+                inventory.setLastUpdatedBy(LAST_UPDATED_BY);
+//                inventoryRepo.updatelastUpdatedBy(LAST_UPDATED_BY, subproduct);
+                inventory.setProductDetails(productEntity);
+                inventory.setSubProductDetails(subproduct);
+                inventory.setVendorDetails(vendorEntity);
+                inventoryRepo.save(inventory);
+                inventoryResponse.message = "The record updated successfully";
+                inventoryResponse.inventoryId = inventory.getInventoryid();
             }
-            return inventoryResponse;
+
+
+        }else {
+            inventoryResponse.message = "Id not found ";
         }
+            return inventoryResponse;
 
-//
+    }
 
 
-        private void addDetails (String productTypeReq, String stockLocationReq, String productNameReq, String subProductNameReq,int quantityReq, String vendorNameReq){
+        private InventoryResponse addDetails (String productTypeReq, String stockLocationReq, String productNameReq, String
+        subProductNameReq,int quantityReq, String vendorNameReq){
             Inventory inventory = new Inventory();
+
+            InventoryResponse inventoryResponse = new InventoryResponse();
 
             ProductEntity productDetails = productRepo.findByproductName(productNameReq);
             Subproduct subproductDetails = subProductRepo.findBysubProductName(subProductNameReq);
@@ -98,6 +131,13 @@ public class InventoryService {
             inventory.setVendorDetails(vendorDetails);
             inventory.setCreatedByTimestamp(LocalDateTime.now());
             inventory.setCreatedBy(CREATED_BY);
+
             inventoryRepo.save(inventory);
-        }
+
+            inventoryResponse.message = "added to inventory";
+            inventoryResponse.inventoryId = inventory.getInventoryid();
+
+            return inventoryResponse;
     }
+    }
+

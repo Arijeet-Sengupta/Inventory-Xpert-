@@ -6,6 +6,7 @@ import com.dbtest.dbtest.Service.InventoryService;
 import com.dbtest.dbtest.Service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,5 +27,17 @@ public class InventoryController {
         return inventoryService.addIntoInventory(productType, stockLocation, producName, subProductName, quantity, vendorName);
     }
 
+    @PutMapping("/Inventory")
+    public InventoryResponse updateInventory(@RequestParam("productType") String productType,
+                                             @RequestParam("stockLocation") String stockLocation,
+                                             @RequestParam("productName") String producName,
+                                             @RequestParam("subProductName") String subProductName,
+                                             @RequestParam("quantity") int quantity,
+                                             @RequestParam("idToUpdate") int idToUpdate,
+                                             @RequestParam("vendorName") String vendorName) {
 
+        return inventoryService.updateIntoInventory(productType, stockLocation, producName, subProductName, quantity, idToUpdate, vendorName);
+
+
+    }
 }
