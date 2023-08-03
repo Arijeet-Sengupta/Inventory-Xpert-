@@ -30,9 +30,7 @@ public class ProductService {
           return updateproductname(productReq.productId, productReq.productName);
       }
 
-       // ProductEntity productDetails = productRepo.findByproductId(productReq.productId);
-       // productResponse.message="ADD or Update";
-       // return productResponse;
+
     }
 
 

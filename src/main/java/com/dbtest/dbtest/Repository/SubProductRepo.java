@@ -18,16 +18,5 @@ public interface SubProductRepo extends JpaRepository<Subproduct, Integer> {
     Subproduct findBysubProductId(@Param(" ") int subProductId);
 
     @Query
-    Subproduct findBySubProductNameAndProductDetailsAndVendorDetails(@Param("") String subProductName, ProductEntity productDetails, VendorEntity vendorDetails );
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-public interface SubProductRepo extends JpaRepository<Subproduct, Integer> {
-   
-    @Query
-    Subproduct findBysubProductName(@Param("") String subProductName);
-
-
+    Subproduct findBySubProductNameAndProductDetailsAndVendorDetails(@Param("") String subProductName, ProductEntity productDetails, VendorEntity vendorDetails);
 }

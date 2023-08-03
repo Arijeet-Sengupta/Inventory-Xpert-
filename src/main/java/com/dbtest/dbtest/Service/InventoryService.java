@@ -32,7 +32,16 @@ public class InventoryService {
     @Autowired
     public InventoryRepo inventoryRepo;
 
-
+    /**
+     * This is the method which is returned from the Inventory Controller by post mapping (To add details ).
+     * @param productTypeReq
+     * @param stockLocationReq
+     * @param productNameReq
+     * @param subProductNameReq
+     * @param quantityReq
+     * @param vendorNameReq
+     * @return Json Response as the message and the Inventory id in which the entry is made.
+     */
     public InventoryResponse addIntoInventory(String productTypeReq, String stockLocationReq, String productNameReq, String subProductNameReq, int quantityReq, String vendorNameReq) {
 
         InventoryResponse inventoryResponse = new InventoryResponse();
@@ -46,12 +55,19 @@ public class InventoryService {
 
         if (!Objects.nonNull(inventory)) {
 
-           return addDetails(productTypeReq, stockLocationReq, productNameReq, subProductNameReq, quantityReq, vendorNameReq);
+            return addDetails(productTypeReq, stockLocationReq, productNameReq, subProductNameReq, quantityReq, vendorNameReq);
 
         }
         return inventoryResponse;
     }
 
+    /**
+     * This method is used to throw exceptions if a product , sub-product or vendor is not valid (not present in particular table).
+     *
+     * @param productEntity
+     * @param subproduct
+     * @param vendorEntity
+     */
     private void checkValidation(ProductEntity productEntity, Subproduct subproduct, VendorEntity vendorEntity) {
         if (!Objects.nonNull(productEntity)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request - Product Name not Valid ");
@@ -64,6 +80,19 @@ public class InventoryService {
         }
     }
 
+    /**
+     * This method is for updating the existing details in the Inventory , when the Required inventoryId is matched .
+     *
+     * @param productTypeReq
+     * @param stockLocationReq
+     * @param productNameReq
+     * @param subProductNameReq
+     * @param quantityReq
+     * @param idReq
+     * @param vendorNameReq
+     * @return Json Response as the message and the Inventory id in which the update is made.
+     * @author Arijeet Sengupta
+     */
     public InventoryResponse updateIntoInventory(String productTypeReq, String stockLocationReq, String productNameReq, String subProductNameReq, int quantityReq, int idReq, String vendorNameReq) {
         InventoryResponse inventoryResponse = new InventoryResponse();
 
@@ -78,20 +107,14 @@ public class InventoryService {
                 inventoryResponse.message = "No Update made to the DB since the request data already exists in the DB";
             } else {
                 inventory.setStocklocation(stockLocationReq);
-//                inventoryRepo.updatestocklocation(stockLocationReq, subproduct);
                 inventory.setQuantity(quantityReq);
-//                inventoryRepo.updatequantity(quantityReq, subproduct);
                 inventory.setProductType(productTypeReq);
                 Double purchasePrice = quantityReq * subproduct.getProductPurchasePrice();
                 Double sellingPrice = quantityReq * subproduct.getProductSellingPrice();
                 inventory.setProductPurchasePrice(purchasePrice);
-//                inventoryRepo.updateproductPurchasePrice(purchasePrice, subproduct);
                 inventory.setProductSellingPrice(sellingPrice);
-//                inventoryRepo.updateproductSellingPrice(sellingPrice, subproduct);
                 inventory.setLastUpdatedTimestamp(LocalDateTime.now());
-//                inventoryRepo.updatelastUpdatedTimestamp(LocalDateTime.now(), subproduct);
                 inventory.setLastUpdatedBy(LAST_UPDATED_BY);
-//                inventoryRepo.updatelastUpdatedBy(LAST_UPDATED_BY, subproduct);
                 inventory.setProductDetails(productEntity);
                 inventory.setSubProductDetails(subproduct);
                 inventory.setVendorDetails(vendorEntity);
@@ -101,43 +124,60 @@ public class InventoryService {
             }
 
 
-        }else {
+        } else {
             inventoryResponse.message = "Id not found ";
         }
-            return inventoryResponse;
+        return inventoryResponse;
 
     }
 
+    /**
+     * This method is for adding the details in the Inventory , while the conditions are successfully checked.
+     *
+     * @param productTypeReq
+     * @param stockLocationReq
+     * @param productNameReq
+     * @param subProductNameReq
+     * @param quantityReq
+     * @param vendorNameReq
+     * @return Json Response as the message and the Inventory id in which the entry is made.
+     * @author Arijeet Sengupta
+     */
 
-        private InventoryResponse addDetails (String productTypeReq, String stockLocationReq, String productNameReq, String
-        subProductNameReq,int quantityReq, String vendorNameReq){
-            Inventory inventory = new Inventory();
+    private InventoryResponse addDetails(String productTypeReq, String stockLocationReq, String productNameReq, String
+            subProductNameReq, int quantityReq, String vendorNameReq) {
+        Inventory inventory = new Inventory();
 
-            InventoryResponse inventoryResponse = new InventoryResponse();
+        InventoryResponse inventoryResponse = new InventoryResponse();
 
-            ProductEntity productDetails = productRepo.findByproductName(productNameReq);
-            Subproduct subproductDetails = subProductRepo.findBysubProductName(subProductNameReq);
-            VendorEntity vendorDetails = vendorRepo.findByvendorName(vendorNameReq);
+        ProductEntity productDetails = productRepo.findByproductName(productNameReq);
+        Subproduct subproductDetails = subProductRepo.findBysubProductName(subProductNameReq);
+        VendorEntity vendorDetails = vendorRepo.findByvendorName(vendorNameReq);
 
-            inventory.setProductType(productTypeReq);
-            inventory.setStocklocation(stockLocationReq);
-            inventory.setProductDetails(productDetails);
-            inventory.setSubProductDetails(subproductDetails);
-            inventory.setQuantity(quantityReq);
-            Double purchasePrice = quantityReq * subproductDetails.getProductPurchasePrice();
-            inventory.setProductPurchasePrice(purchasePrice);
-            Double sellingPrice = quantityReq * subproductDetails.getProductSellingPrice();
-            inventory.setProductSellingPrice(sellingPrice);
-            inventory.setVendorDetails(vendorDetails);
-            inventory.setCreatedByTimestamp(LocalDateTime.now());
-            inventory.setCreatedBy(CREATED_BY);
+        inventory.setProductType(productTypeReq);
+        inventory.setStocklocation(stockLocationReq);
+        inventory.setProductDetails(productDetails);
+        inventory.setSubProductDetails(subproductDetails);
+        inventory.setQuantity(quantityReq);
 
-            inventoryRepo.save(inventory);
+        Double purchasePrice = quantityReq * subproductDetails.getProductPurchasePrice();
+        inventory.setProductPurchasePrice(purchasePrice);
 
-            inventoryResponse.message = "added to inventory";
-            inventoryResponse.inventoryId = inventory.getInventoryid();
+        Double sellingPrice = quantityReq * subproductDetails.getProductSellingPrice();
+        inventory.setProductSellingPrice(sellingPrice);
 
-            return inventoryResponse;
+        inventory.setVendorDetails(vendorDetails);
+        inventory.setLastUpdatedBy(LAST_UPDATED_BY);
+        inventory.setLastUpdatedTimestamp(LocalDateTime.now());
+        inventory.setCreatedByTimestamp(LocalDateTime.now());
+        inventory.setCreatedBy(CREATED_BY);
+
+        inventoryRepo.save(inventory);
+
+        inventoryResponse.message = "added to inventory";
+        inventoryResponse.inventoryId = inventory.getInventoryid();
+
+        return inventoryResponse;
     }
-    }
+}
 
