@@ -11,7 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 public interface VendorRepo extends JpaRepository<VendorEntity, Integer>{
 
 
+
+    @Query
+    VendorEntity findByvendorName(@Param("") String vendorName);
     @Query
     VendorEntity findByVendorid(@Param("") int vendorid);
+    @Query
+    VendorEntity findByVendorNameAndVendorLocationAndEmail(@Param("") String vendorName,String vendorlocation,String email);
 
 }
