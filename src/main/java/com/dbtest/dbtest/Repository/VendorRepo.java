@@ -13,5 +13,7 @@ public interface VendorRepo extends JpaRepository<VendorEntity, Integer>{
 
     @Query
     VendorEntity findByVendorid(@Param("") int vendorid);
+    @Query
+    VendorEntity findByvendorName(@Param("") String vendorName);
 
 }
