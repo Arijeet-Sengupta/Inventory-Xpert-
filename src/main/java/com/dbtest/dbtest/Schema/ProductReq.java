@@ -11,6 +11,7 @@ public class ProductReq {
         return productId;
     }
 
+
     @JsonProperty
     public String productName;
 
