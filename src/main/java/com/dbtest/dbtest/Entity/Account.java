@@ -21,7 +21,6 @@ public class Account {
     @Column(name = "Email")
     private String email;
 
-
     @Column(name = "Password")
     private String password;
 

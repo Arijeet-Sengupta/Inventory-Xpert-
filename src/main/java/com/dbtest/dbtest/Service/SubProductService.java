@@ -34,69 +34,48 @@ public class SubProductService {
 
 
 public SubProductResponse addSubProduct(SubProductSchema subProductSchema) {
-    Subproduct subproduct = subProductRepo.findBysubProductName(subProductSchema.subProductName);
-    // if subproduct found is null new record will be added otherwise record willbe updated
-    if (subproduct == null) {
-        addSubProductinDb(subProductSchema.subProductName, subProductSchema.productName, subProductSchema.vendorName, subProductSchema.productSellingPrice, subProductSchema.productPurchasePrice);
-        subProductResponse.message = "Product added successfully";
-    } else {
-        boolean attributesChanged = false;
+    ProductEntity prod = productRepo.findByproductName(subProductSchema.productName);
+    VendorEntity vend = vendorRepo.findByvendorName(subProductSchema.vendorName);
+    Subproduct subproduct= subProductRepo.findBySubProductNameAndProductDetailsAndVendorDetails(subProductSchema.subProductName,prod,vend);
 
-        // Check if any of the attributes have changed
-        if (!subproduct.getProductDetails().getProductName().equals(subProductSchema.productName)) {
-            ProductEntity prod=productRepo.findByproductName(subProductSchema.productName);
-            if(prod==null){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Product with ProductName found");
-            }
-            else{
-                subproduct.setProductDetails(prod);
-            }
-            attributesChanged = true;
-        }
-        if (!subproduct.getVendorDetails().getVendorName().equals(subProductSchema.vendorName)) {
-             VendorEntity vend=vendorRepo.findByvendorName(subProductSchema.vendorName);
-            if (vend == null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Vendor with VendorName found");
-            }
-            else {
-                subproduct.setVendorDetails(vend);
-            }
-            attributesChanged = true;
-        }
-        if (subproduct.getProductSellingPrice()!=(subProductSchema.productSellingPrice)) {
-            subproduct.setProductSellingPrice(subProductSchema.productSellingPrice);
-            attributesChanged = true;
-        }
-        if (subproduct.getProductPurchasePrice()!=subProductSchema.productPurchasePrice) {
-            subproduct.setProductPurchasePrice(subProductSchema.productPurchasePrice);
-            attributesChanged = true;
-        }
+    if(subproduct!=null) {
+                subProductResponse.message = "SubProduct already exists";
+                subProductResponse.YourSubproductID = subproduct.getSubProductId();
+    }
+    else {
+        //add
+        subProductResponse.message = "SubProduct added successfully";
+        subProductResponse.YourSubproductID=addSubProductinDb(subProductSchema.subProductName, subProductSchema.productName, subProductSchema.vendorName, subProductSchema.productSellingPrice, subProductSchema.productPurchasePrice);
 
-        if (attributesChanged==true) {
-            // Update the lastUpdatedBy and lastUpdatedTimestamp
-            subproduct.setLastUpdatedBy(lastUpdatedBy);
-            subproduct.setLastUpdatedTimestamp(LocalDateTime.now());
-
-            // Save the updated subproduct in the database
-            subProductRepo.save(subproduct);
-            subProductResponse.message = "Subproduct attributes updated";
-        } else if (attributesChanged==false) {
-            subProductResponse.message = "Subproduct already exists in the database with the same attributes";
-        }
     }
 
-    return subProductResponse;
+    return  subProductResponse;
+    //addSubProductinDb(subProductSchema.subProductName, subProductSchema.productName, subProductSchema.vendorName, subProductSchema.productSellingPrice, subProductSchema.productPurchasePrice);
 }
 
 
-    private void addSubProductinDb(String subProductName, String productName, String vendorName, float productSellingPrice, float productPurchasePrice) {
+    private int addSubProductinDb(String subProductName, String productName, String vendorName, Double productSellingPrice, Double productPurchasePrice) {
 
-        Subproduct subproduct=new Subproduct();
-        //product id = query to find product Name get product id
-        subproduct.setProductDetails(productRepo.findByproductName(productName));
+       Subproduct subproduct=new Subproduct();
 
-        //vendor name = query to find vendor id
-        subproduct.setVendorDetails(vendorRepo.findByvendorName(vendorName));
+        //finding record in product table for given product name if product with productname not found exception thrown
+        ProductEntity prod = productRepo.findByproductName(productName);
+        if(prod==null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid ProductName found. Please add Product first");
+        }
+        else{
+            subproduct.setProductDetails(productRepo.findByproductName(productName));
+        }
+
+        //finding record in vendor table for given Vendor name if vendername not found exception thrown
+
+        VendorEntity vend = vendorRepo.findByvendorName(vendorName);
+        if(vend==null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid VendorName found. Please add Vendor first");
+        }
+        else {
+            subproduct.setVendorDetails(vendorRepo.findByvendorName(vendorName));
+        }
 
         subproduct.setSubProductName(subProductName);
 
@@ -114,6 +93,64 @@ public SubProductResponse addSubProduct(SubProductSchema subProductSchema) {
 
         subProductRepo.save(subproduct);
 
+        return subProductResponse.YourSubproductID=subproduct.getSubProductId();
+
     }
 
+    public SubProductResponse updateSubproduct(SubProductSchema subProductSchema ){
+        Subproduct subproduct = subProductRepo.findBysubProductId(subProductSchema.subproductId);
+
+        if (subproduct ==null){
+            subProductResponse.message = "Please Provide Valid Subproduct ID or Add Subproduct First";
+            subProductResponse.YourSubproductID = subproduct.getSubProductId();
+        }
+
+        else {
+            boolean attributesChanged = false;
+
+            // Check if any of the attributes have changed
+            if (!subproduct.getProductDetails().getProductName().equals(subProductSchema.productName)) {
+                ProductEntity prod = productRepo.findByproductName(subProductSchema.productName);
+                if (prod == null) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Product with ProductName found. Please add Subproduct first");
+                } else {
+                    subproduct.setProductDetails(prod);
+                }
+                attributesChanged = true;
+            }
+            if (!subproduct.getVendorDetails().getVendorName().equals(subProductSchema.vendorName)) {
+                VendorEntity vend = vendorRepo.findByvendorName(subProductSchema.vendorName);
+                if (vend == null) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Vendor with VendorName found. Please add Subproduct first");
+                } else {
+                    subproduct.setVendorDetails(vend);
+                }
+                attributesChanged = true;
+            }
+            if (!subproduct.getProductSellingPrice().equals(subProductSchema.productSellingPrice)) {
+                subproduct.setProductSellingPrice(subProductSchema.productSellingPrice);
+                attributesChanged = true;
+            }
+            if (!subproduct.getProductPurchasePrice().equals(subProductSchema.productPurchasePrice)) {
+                subproduct.setProductPurchasePrice(subProductSchema.productPurchasePrice);
+                attributesChanged = true;
+            }
+
+            if (attributesChanged == true) {
+                // Update the lastUpdatedBy and lastUpdatedTimestamp
+                subproduct.setLastUpdatedBy(lastUpdatedBy);
+                subproduct.setLastUpdatedTimestamp(LocalDateTime.now());
+
+                // Save the updated subproduct in the database
+                subProductRepo.save(subproduct);
+                subProductResponse.message = "Subproduct attributes updated";
+                subProductResponse.YourSubproductID = subproduct.getSubProductId();
+            } else if (attributesChanged == false) {
+                subProductResponse.message = "Subproduct already exists in the database with the same attributes";
+                subProductResponse.YourSubproductID = subproduct.getSubProductId();
+            }
+        }
+            return subProductResponse;
+
+    }
 }
