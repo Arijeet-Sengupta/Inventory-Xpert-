@@ -27,16 +27,4 @@ public class ProductController {
 
         return productService.addorUpdate(productReq);
     }
-
-//    @PostMapping("/updateDetails")
-//    public ProductResponse updateProduct(@RequestBody ProductReq productReq)
-//    {
-//        return productService.updateproductname(productReq);
-//    }
-
-
-
-
-
-
 }

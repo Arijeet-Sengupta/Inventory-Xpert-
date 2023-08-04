@@ -31,7 +31,7 @@ public class VendorController {
            @Validated @RequestParam("email") String email)
 
     {
-        return vendorService.UpdatedVendorDetails(vendorid,vendorname, vendorlocation, email);
+        return vendorService.updatedVendorDetails(vendorid,vendorname, vendorlocation, email);
     }
 
 
