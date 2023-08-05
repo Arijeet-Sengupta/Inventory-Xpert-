@@ -20,7 +20,7 @@ public class ProductService {
     public ProductRepo productRepo;
 
 
-
+//Below method is used to check whether the new product is added or Updated
    public ProductResponse addorUpdate(ProductReq productReq)
     {
       if(productReq.productId==null) {
@@ -58,7 +58,7 @@ public class ProductService {
 
     }
 
-    // ProductReq productReq = new ProductReq();
+    // Mehthod is used to Update the product through ProductId
     public ProductResponse updateproductname(Integer productId, String productName) {
         ProductEntity productEntity = new ProductEntity();
         ProductReq productReq = new ProductReq();

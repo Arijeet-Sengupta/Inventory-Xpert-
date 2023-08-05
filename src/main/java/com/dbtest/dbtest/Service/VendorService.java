@@ -20,13 +20,13 @@ public class VendorService {
     public VendorRepo vendorRepo;
     VendorResponse vendorResponse = new VendorResponse();
 
-
+    //Method addVendor is used to add details of vendor and if the same values are added again is shows Vendor already exists.
     public VendorResponse addVendor(String vendorname, String vendorlocation, String email) {
 
         VendorEntity ve = vendorRepo.findByVendorNameAndVendorLocationAndEmail(vendorname, vendorlocation, email);
         if (!Objects.nonNull(ve)) {
 
-            return addintovendor(vendorname, vendorlocation, email);
+            return addIntoVendor(vendorname, vendorlocation, email);
 
 
 
@@ -36,8 +36,8 @@ public class VendorService {
         }
         return vendorResponse;
     }
-
-    private VendorResponse addintovendor(String vendorname, String vendorlocation, String email) {
+    //Method addintovendor is called from addVendor to add vendor details
+    private VendorResponse addIntoVendor(String vendorname, String vendorlocation, String email) {
         VendorEntity ve = new VendorEntity();
         ve.setVendorName(vendorname);
         ve.setVendorLocation(vendorlocation);
@@ -54,8 +54,8 @@ public class VendorService {
         return vendorResponse;
 
     }
-
-    public VendorResponse UpdatedVendorDetails(int vendorid, String vendorName, String vendorLocation, String email) {
+    //If the vendor Id already exists the method updatedVendorDetails will be updating the vendorDetails without taking Dublicate values.
+    public VendorResponse updatedVendorDetails(int vendorid, String vendorName, String vendorLocation, String email) {
 
 
         VendorEntity existingVendor = vendorRepo.findByVendorid(vendorid);
